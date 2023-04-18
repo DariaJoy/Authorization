@@ -10,13 +10,19 @@ btnReg.addEventListener('click', toggleView);
 const btnAuth = document.querySelector('.form__link-auth');
 btnAuth.addEventListener('click', toggleView);
 
-function toggleView () {
+function toggleView (event) {
+    event.preventDefault();
     const FormReg = document.querySelector('#registration');
     const FormAuth = document.querySelector('#authorization')
-    if (FormReg.style.display='none') {
+    if (FormReg.style.display === 'none') {
+        FormReg.style.display='flex'
+        FormAuth.style.display='none'
+    } else {
+        FormReg.style.display='none'
         FormAuth.style.display='flex'
-    } else if (FormReg.style.display='none')
-    FormAuth.style.display='flex'
+    }
+    
+    
 }
 
 function signUp(event) {
@@ -32,7 +38,7 @@ function signUp(event) {
         const users = JSON.parse(localStorage.getItem('users')) || [];
         if (!users.find(({email}) => user.email === email)){
             users.push(user)
-            localStorage.setItem('user', JSON.stringify(users))
+            localStorage.setItem('users', JSON.stringify(users))
         } else alert('Такой пользователь уже существует')
     }
 };
@@ -44,7 +50,7 @@ function signIn(event) {
     if(emailIsValid && passwordIsValid){
         const email = document.querySelector('#userEmail-auth').value;
         const password = document.querySelector('#userPassword-auth').value;
-        const users = JSON.parse(localStorage.getItem('user')) || [];
+        const users = JSON.parse(localStorage.getItem('users')) || [];
         if (users.find(user => user.email === email && user.password === password)) {
             alert('Вы успешно вошли!')
         } else alert('Ошибка авторизации')
@@ -136,16 +142,17 @@ function isEmpty(inputElement, errorBox){
 };
 
 function toggleErrorMessage (inputElement, errorBox, errorMessage) {
+    const lableRed = document.querySelectorAll('.form__lable, .form__wrapper');
+
     if (errorMessage) {
         inputElement.classList.add('form__input-error');
         errorBox.textContent = errorMessage;
         errorBox.style.display = 'block';
         if (errorBox.style.display = 'block') {
-            const lableRed = document.querySelectorAll('.form__lable, .form__wrapper');
             for (const lable of lableRed) {
                 lable.classList.add('form__lable-error');
                 lable.style.display = 'block';
-            }               
+            }
         } else if (errorBox.style.display = 'none'){
             for (const lable of lableRed) {
                 lable.classList.remove('form__lable-error');
@@ -154,6 +161,9 @@ function toggleErrorMessage (inputElement, errorBox, errorMessage) {
         };
     } else {
         inputElement.classList.remove('form__input-error');
+        for (const lable of lableRed) {
+            lable.classList.remove('form__lable-error');
+        }        
         errorBox.style.display = 'none'
     }
 };

@@ -200,6 +200,10 @@ body {
     cursor       : pointer;
 }
 
+.form__btn-auth {
+    margin-top: 73px;
+}
+
 
 .error__email-reg,
 .error__password-reg,
